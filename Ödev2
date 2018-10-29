@@ -1,0 +1,43 @@
+from PyQt4.QtGui import *
+from PyQt4.QtCore import *
+import sys
+
+class devirHizi(QDialog):
+    def __init__(self,ebeveyn=None):
+        super(devirHizi,self).__init__(ebeveyn)
+        grid=QGridLayout()
+        grid.addWidget(QLabel('Toplam İşten Ayrılan Personel:'),0,0)
+
+        self.istenAyrilan=QLineEdit()
+        grid.addWidget(self.istenAyrilan,0,1)
+
+        grid.addWidget(QLabel('Aylık Çalışan Sayısı Toplamı:'),1,0)
+
+        self.aylik=QLineEdit()
+        grid.addWidget(self.aylik,1,1)
+        grid.addWidget(QLabel('Hesaplanacak Süre(Ay):'),2,0)
+        self.sure=QLineEdit()
+        grid.addWidget(self.sure,2,1)
+        grid.addWidget(QLabel('Sonuç'),3,0)
+        self.hesapSonuc=QLabel("")
+        hesapla=QPushButton('Hesapla')
+        grid.addWidget(hesapla,4,1)
+        grid.addWidget(self.hesapSonuc,3,1)
+        self.connect(hesapla,SIGNAL('pressed()'),self.hesap)
+
+        self.setLayout(grid)
+        self.setWindowTitle('İşgücü Devir Hızı v1.0')
+
+        self.resize(170,100)
+
+    def hesap(self):
+        ia=int(self.istenAyrilan.text())
+        ay=int(self.aylik.text())
+        zaman=int(self.sure.text())
+        devirHizi=(ia/(ay/zaman))*100
+        self.hesapSonuc.setText('<font color="red"><b>%.lf</b></font>'%devirHizi)
+
+uyg=QApplication([])
+pencere=devirHizi()
+pencere.show()
+uyg.exec_
